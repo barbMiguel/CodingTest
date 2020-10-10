@@ -9,8 +9,8 @@ public class Ascensor {
 
 	public static int TOPFLOOR = 29;
 	private static ArrayList<Integer> stops = new ArrayList<Integer>();;
-	private int startingPoint = 0;;
-	private Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+	private static int startingPoint = 0;;
+	private static Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 	private static Map<Integer, String> control = new HashMap<Integer, String>();
 
 
@@ -30,9 +30,12 @@ public class Ascensor {
 		String cadena = "";
 		System.out.println("Name:");
 		
+
 		try {
-			while(cadena!="\n") {
-			cadena = input.readLine();
+//			cadena = input.readLine();
+//			System.out.println("\n");
+
+			while((cadena = input.readLine()) != null) {
 			contador++;
 			
 			cadena = cadena.replace("[","");
@@ -41,15 +44,23 @@ public class Ascensor {
 			cadena = cadena.replace("{","");
 			cadena = cadena.replace("}","");
 
-			
 			System.out.println(contador);
 			System.out.println(cadena);
 			
 			control.put(contador,cadena);
 			
+//			cadena = input.readLine();
+			if(contador >=3) {
+				break;
 			}
+			}
+			
 			input.close();
 			entrada.close();
+
+			
+			assignValues(control);
+		
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}catch	(NumberFormatException e) {
@@ -62,17 +73,18 @@ public class Ascensor {
 			entrada.close();
 		}
 		
-		assignValues(control);
+
+
         
     }
 
 
 
 	private static void assignValues(Map<Integer, String> control2) {
+		System.out.println("ENTRANDO");
 		String[] floors = splitting(control2.get(1), " ");
 		String[] initial = splitting(control2.get(2), " ");
 		String[] input = splitting(control2.get(1), " ");
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 		//Assigning values for floors entered
 		for (int i = 0; i < input.length; i++) {
@@ -87,11 +99,24 @@ public class Ascensor {
 			}
 		}
 		
+		//Assigning values for stops of the elevator
 		for (int i = 0; i < floors.length; i++) {
-			
+			try {
+				int value = Integer.parseInt(floors[i]);
+				stops.add(value);
+			}catch(NumberFormatException e) {
+				System.out.println(e.getMessage());
+			}
 		}
-//		stops = floors;
-//		startingPint = initial;
+		
+		
+		try {
+			int value = Integer.parseInt(initial[0]);
+			startingPoint = value;
+		}catch(NumberFormatException e) {
+			System.out.println(e.getMessage());
+		}
+
 		
 
 	}
