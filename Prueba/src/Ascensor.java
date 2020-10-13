@@ -29,47 +29,47 @@ public class Ascensor {
 	public Ascensor() {
 		super();
 	}
-	
+
 
 
 	public static void main(String[] args) throws IOException {
-		
-		
+
+
 		int contador = 0;
-		
+
 		InputStreamReader entrada = new InputStreamReader(System.in);
 		BufferedReader input = new BufferedReader (entrada);
 		String cadena = "";
 		System.out.println("Introduzca las entradas: ");
-		
+
 
 		try {
 
 			while((cadena = input.readLine()) != null) {
-			contador++;
-			
-			cadena = cadena.replace("[","");
-			cadena = cadena.replace("]","");
-			cadena = cadena.replace(",","");
-			cadena = cadena.replace("{","");
-			cadena = cadena.replace("}","");
-			
-			control.put(contador,cadena);
-			
-			if(contador >=3) {
-				break;
+				contador++;
+
+				cadena = cadena.replace("[","");
+				cadena = cadena.replace("]","");
+				cadena = cadena.replace(",","");
+				cadena = cadena.replace("{","");
+				cadena = cadena.replace("}","");
+
+				control.put(contador,cadena);
+
+				if(contador >=3) {
+					break;
+				}
 			}
-			}
-			
+
 			input.close();
 			entrada.close();
 
 			System.out.println("\n");
-			
+
 			assignValues(control);
 			isupwards = isUpwards(startingPoint, stops);
 			elevatorPath();
-		
+
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}catch	(NumberFormatException e) {
@@ -81,18 +81,18 @@ public class Ascensor {
 			input.close();
 			entrada.close();
 		}
-		
 
 
-        
-    }
 
 
-/**
- * This method assigns values to each of the global variables depending on the map 
- * created previously of the user input * 
- * @param control2
- */
+	}
+
+
+	/**
+	 * This method assigns values to each of the global variables depending on the map 
+	 * created previously of the user input * 
+	 * @param control2
+	 */
 	private static void assignValues(Map<Integer, String> control2) {
 		String[] floors = splitting(control2.get(1), " ");
 		String[] initial = splitting(control2.get(2), " ");
@@ -110,7 +110,7 @@ public class Ascensor {
 				System.out.println("Exception: "+e.getMessage());
 			}
 		}
-		
+
 		//Assigning values for stops of the elevator
 		for (int i = 0; i < floors.length; i++) {
 			try {
@@ -120,7 +120,7 @@ public class Ascensor {
 				System.out.println("Exception: "+e.getMessage());
 			}
 		}
-		
+
 		//Assigning 
 		try {
 			int value = Integer.parseInt(initial[0]);
@@ -129,10 +129,10 @@ public class Ascensor {
 			System.out.println(e.getMessage());
 		}
 
-		
+
 
 	}
-	
+
 	/**
 	 * 
 	 * @param arr - String to be splitted
@@ -143,7 +143,7 @@ public class Ascensor {
 		String[] splitted = arr.split(splitter);
 		return splitted;
 	}
-	
+
 	/**
 	 * This method returns true if the elevator must begin going upwards
 	 * @param initial
@@ -152,7 +152,7 @@ public class Ascensor {
 	 */
 	private static boolean isUpwards(int initial, ArrayList<Integer> floors) {
 		boolean upwards = false;
-		
+
 		if(initial < floors.get(0)) {
 			upwards = true;
 		}else if (initial > floors.get(0)){
@@ -164,12 +164,12 @@ public class Ascensor {
 				upwards = false;
 			}
 		}
-		
+
 		isupwards = upwards;
 
 		return upwards;
 	}
-	
+
 	/**
 	 * This method prints the elevator path
 	 */
@@ -178,7 +178,7 @@ public class Ascensor {
 		int counting = 1;
 		int currentPosition = startingPoint;
 		int counter = 0;
-		
+
 		String msjPiso = "Elevador en piso ";
 		String msjDetiene = "Elevador se detiene";
 		String msjSubiendo = "Elevador subiendo ";
@@ -191,13 +191,13 @@ public class Ascensor {
 			boolean minor = false;
 
 			while((currentPosition <= TOPFLOOR) || (currentPosition > 0) || !found || !minor) {
-				
+
 				ArrayList<Integer> stopsClon = (ArrayList<Integer>) stops.clone();
 				ArrayList<Integer> stopsOrdered = stopsOrdered(stopsClon);
-				
+
 				counter++;
 				System.out.println(counter+". "+msjPiso + currentPosition);
-				
+
 				// The elevator goes upwards
 				if(isupwards) {
 					if(stops.size()==1) {
@@ -218,7 +218,7 @@ public class Ascensor {
 						int index = stops.indexOf(currentPosition);
 						stops.remove(index);
 						i -= 1;
-						
+
 						if(!stops.isEmpty()) {
 							counter++;
 							System.out.println(counter+". "+msjDetiene + " → " + printStops(stops));							
@@ -226,14 +226,14 @@ public class Ascensor {
 							counter++;
 							System.out.println(counter+". "+msjDetiene);
 						}
-						
+
 						//Busca el piso con la clave currentPosition, si ese piso no está en stops
 						// lo debe agregar a la lista de stops
 						if(floorEntered(stops, currentPosition)) {
 							counter++;
 							System.out.println(counter+". "+msjPisoIngresado + printStops(stops));
 						}
-						
+
 						if(currentPosition==TOPFLOOR) {
 							if(!stops.isEmpty()) {
 								counter++;
@@ -244,7 +244,7 @@ public class Ascensor {
 							counter++;
 							System.out.println(counter+". "+msjSubiendo);
 						}
-						
+
 						break;
 					}
 				}
@@ -262,14 +262,14 @@ public class Ascensor {
 						System.out.println(counter+". "+msjBajando);
 						minor = true;
 						break;
-						
+
 					}else if(currentPosition==stopsOrdered.get(i)) {
 						// Elevator actually reaches a floor of the list
 						found = true;
 						int index = stops.indexOf(currentPosition);
 						stops.remove(index);
 						i -= 1;
-						
+
 						if(!stops.isEmpty()) {
 							counter++;
 							System.out.println(counter+". "+msjDetiene + " → " + printStops(stops));							
@@ -277,14 +277,14 @@ public class Ascensor {
 							counter++;
 							System.out.println(counter+". "+msjDetiene);
 						}
-						
+
 						//Busca el piso con la clave currentPosition, si ese piso no está en stops
 						// lo debe agregar a la lista de stops
 						if(floorEntered(stops, currentPosition)) {
 							counter++;
 							System.out.println(counter+". "+msjPisoIngresado + printStops(stops));
 						}
-						
+
 						if(currentPosition==0) {
 							if(!stops.isEmpty()) {
 								counter++;
@@ -294,11 +294,11 @@ public class Ascensor {
 							counter++;
 							System.out.println(counter+". "+msjBajando);
 						}
-						
+
 						break;
 					}
 				}
-				
+
 
 
 				currentPosition += counting;
@@ -311,9 +311,9 @@ public class Ascensor {
 					currentPosition += counting -1;
 					isupwards = false;
 				}
-				
+
 			}
-			
+
 			currentPosition += counting;
 
 			if(currentPosition == 0) {
@@ -324,11 +324,11 @@ public class Ascensor {
 				currentPosition += counting -1;
 				isupwards = false;
 			}
-			
+
 			if(i==stops.size()-1) {
 				i=0;
 			}
-			
+
 		}
 	}
 
@@ -360,9 +360,9 @@ public class Ascensor {
 		}else {
 			return false;
 		}
-			
+
 	}
-	
+
 	/**
 	 * Formats the output of stops on console
 	 * @param stops2
@@ -370,7 +370,7 @@ public class Ascensor {
 	 */
 	private static String printStops(ArrayList<Integer> stops2) {
 		String msg = "";
-		
+
 		msg = msg+"[";
 
 		for (int i = 0; i < stops2.size(); i++) {
@@ -381,10 +381,10 @@ public class Ascensor {
 			}
 		}
 		msg = msg+"]";
-		
+
 		return msg;
 	}
-	
+
 	/**
 	 * Orders with sort method the arraylist coming as a parameter
 	 * @param arrayListInt
