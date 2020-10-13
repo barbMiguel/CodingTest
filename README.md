@@ -7,4 +7,8 @@ Code Language: Java
 Main classes: - Ascensor
               - Escaleras
   
-Disclaimer: I may set this project private once I've finished it
+
+### When executing:
+#### Sample:
+On folder: src/files/samples.txt.
+Copy and paste on console.
