@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * 
@@ -54,6 +55,31 @@ public class Game {
 		int counter = 0;
 		
 		try {
+			System.out.println ("Por favor introduzca la cantidad de filas que tendrá el tablero");
+
+	        String filas = "";
+	        Scanner entradaEscaner = new Scanner (System.in); //Creación de un objeto Scanner
+	        filas = entradaEscaner.nextLine (); //Invocamos un método sobre un objeto Scanner
+	        System.out.println ("Entrada recibida por teclado es: \"" + filas +"\"");
+	  
+			System.out.println ("Por favor introduzca la cantidad de filas que tendrá el tablero");
+
+			String columnas = entradaEscaner.nextLine ();
+	        System.out.println ("Entrada recibida por teclado es: \"" + columnas +"\""+"\n");
+
+	        entradaEscaner.close();
+	        System.out.println("\n");
+	        
+	        game.dimX = Integer.parseInt(columnas);
+	        game.dimY = Integer.parseInt(filas);
+	        
+	        if(Integer.parseInt(columnas)<0 || Integer.parseInt(filas)<0) {
+	        	throw new NumberFormatException();
+	        }
+	        
+		
+		
+		// GAME LOGIC
 			while(!win) {
 	
 				dice = (int) Math.floor(Math.random()*6+1);
@@ -65,13 +91,6 @@ public class Game {
 				counter++;
 				System.out.println(counter+". "+"Jugador avanza a cuadro: "+ currentPosition);
 				
-				int a = game.dimX * game.dimY;
-				if(currentPosition >= a) {
-					win = true;
-					counter++;
-					System.out.println(counter+". "+"Fin");
-
-				}
 	
 				//Reaches a snake's mouth and player is sent back
 				if(game.snakes.get(currentPosition) != null){
@@ -88,9 +107,20 @@ public class Game {
 
 				}
 	
+				int a = game.dimX * game.dimY;
+				if(currentPosition >= a) {
+					win = true;
+					counter++;
+					System.out.println(counter+". "+"Fin");
+					
+				}
 	
 			}
-		}catch(Exception e) {
+		}catch(NumberFormatException e) {
+			System.out.println("Solo se permiten valores numéricos enteros positivos. Vuelva a ejecutar el juego");
+
+		}
+		catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 
