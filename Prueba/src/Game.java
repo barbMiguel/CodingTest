@@ -39,6 +39,11 @@ public class Game {
 		dice = 0;
 	}
 
+	/**
+	 * This main method plays automatically the game "Escaleras y Serpientes" and it ends when reaching the top value of the board
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		Game game = new Game();
 		int startingP = game.startingPoint = 0;
@@ -47,6 +52,7 @@ public class Game {
 		int currentPosition = startingP;
 
 		int counter = 0;
+		
 		try {
 			while(!win) {
 	
@@ -67,13 +73,14 @@ public class Game {
 
 				}
 	
-	
+				//Reaches a snake's mouth and player is sent back
 				if(game.snakes.get(currentPosition) != null){
 					currentPosition = game.snakes.get(currentPosition);
 					counter++;
 					System.out.println(counter+". "+"Jugador desciende al cuadro: " + currentPosition);
 				}
 	
+				//Reaches a ladder's bottom and player is sent forward
 				if(game.ladders.get(currentPosition) != null){
 					currentPosition = game.ladders.get(currentPosition);
 					counter++;
